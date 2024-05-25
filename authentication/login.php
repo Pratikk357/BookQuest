@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["logged_in"] = true;
                 // Redirect to dashboard or other page
                 if ($row["is_admin"] === 1) {
-                    header('Location: ../admin_panel/show.php');
+                    header('Location: ../admin_panel/dashboard.php');
                     exit; // Ensure script stops execution after redirect
                 } else {
                     header('Location: ../index.php');

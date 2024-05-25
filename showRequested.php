@@ -10,6 +10,16 @@
 </head>
 
 <body class="p-3">
+    <div class="navbar sticky w-full top-0 z-50 flex justify-center items-center text-white bg-slate-500  mb-3 py-2">
+        <div class='flex gap-3 text-lg '>
+
+            <a class="hover:text-slate-200" href="index.php">Home</a>
+            <a class="hover:text-slate-200" href="./admin_panel/dashboard.php">Dashboard</a>
+
+
+            <?php echo '<a href="' . $navbar_link . '">' . $navbar_text . '</a>'; ?>
+        </div>
+    </div>
     <h2 class="text-xl font-bold">Requested Books</h2>
 
     <?php

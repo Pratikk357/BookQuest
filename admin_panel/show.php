@@ -16,6 +16,8 @@
             <div class='flex gap-3 text-lg '>
 
                 <a class="hover:text-slate-200" href="../index.php">Home</a>
+                <a class="hover:text-slate-200" href="dashboard.php">Dashboard</a>
+
 
                 <?php echo '<a href="' . $navbar_link . '">' . $navbar_text . '</a>'; ?>
             </div>

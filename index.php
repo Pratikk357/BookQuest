@@ -13,7 +13,10 @@ include 'header.php' ?>
         if (isset($_SESSION['username'])) {
             $navbar_text = "Logout";
             $navbar_link = "authentication/logout.php"; // Assuming logout logic is in logout.php
-            echo '<a class="hover:text-slate-200" href="#ervices">Cart</a>';
+            echo '<a class="hover:text-slate-200" href="#ervices"></a>';
+            echo '<div>
+            Cart <span id="cartCount"></span>
+            </div>';
             echo '<a class="hover:text-slate-200" href="request_book.php">Request Book</a>';
             echo '<a href="' . $navbar_link . '">' . $navbar_text . '</a>';
         } else {
@@ -52,7 +55,7 @@ include 'header.php' ?>
                 echo '<div class="p-3 book border flex flex-col relative items-center">';
                 echo '<img src="data:image/jpeg;base64,' . base64_encode($row["book_cover"]) . '" alt="Book Cover">';
                 echo '<p class="font-bold text-lg mt-3">' . $row["book_name"] . '</p>';
-                echo '<button class="bg-green-300 px-3 py-1 rounded">Add to cart</button>';
+                echo '<button class="bg-green-300 px-3 py-1 rounded" id = "cartCount" onclick="addToCart()">Add to cart</button>';
                 echo '<p class="absolute top-2 right-2 bg-slate-900 text-white rounded px-1">Price: Rs.' . $row["price"] . '</p>';
                 echo '</div>';
 
@@ -63,52 +66,8 @@ include 'header.php' ?>
         }
         $conn->close();
         ?>
-        <!--         
 
-        <div class="p-3 book border flex flex-col relative items-center">
-            <img src='./images/rdpd.jpg'>
-            <p class="font-bold text-lg mt-3">Rich Dad Poor Dad</p>
-            <button class='bg-green-300 px-3 py-1 rounded '>Add to cart</button>
-            <p class="absolute top-2 right-2 bg-slate-900 text-white rounded px-1">Price: Rs.600</p>
-
-        </div>
-
-        <div class="p-3 book border flex flex-col relative items-center">
-            <img src='./images/setodharti.jpg'>
-            <p class="font-bold text-lg mt-3">Seto Dharti</p>
-            <button class='bg-green-300 px-3 py-1 rounded '>Add to cart</button>
-            <p class="absolute top-2 right-2 bg-slate-900 text-white rounded px-1">Price: Rs.950</p>
-
-        </div>
-
-        <div class="p-3 book border flex flex-col relative items-center">
-            <img src='./images/sirisko_phool.jpeg'>
-            <p class="font-bold text-lg mt-3">Sirisko Phool</p>
-            <button class='bg-green-300 px-3 py-1 rounded '>Add to cart</button>
-            <p class="absolute top-2 right-2 bg-slate-900 text-white rounded px-1">Price: Rs.1000</p>
-
-        </div>
-
-        <div class="p-3 book border flex flex-col relative items-center">
-            <img src='./images/sunkeshara.jpg'>
-            <p class="font-bold text-lg mt-3">Sunkeshara</p>
-            <button class='bg-green-300 px-3 py-1 rounded '>Add to cart</button>
-            <p class="absolute top-2 right-2 bg-slate-900 text-white rounded px-1">Price: Rs.750</p>
-
-        </div>
-
-        <div class="p-3 book border flex flex-col relative items-center">
-            <img src='./images/teenghumti.jpg'>
-            <p class="font-bold text-lg mt-3">Teen ghumti</p>
-            <button class='bg-green-300 px-3 py-1 rounded '>Add to cart</button>
-            <p class="absolute top-2 right-2 bg-slate-900 text-white rounded px-1">Price: Rs.500</p>
-
-        </div>
-    </div>
-</div> -->
-
-
-        <div class="wrapper">
+        <!-- <div class="wrapper">
 
             <h1 class="text-3xl font-bold ml-3 ">NEW ARRIVALS</h1>
             <div class="container mt-3 flex gap-5 flex-wrap justify-center">
@@ -152,5 +111,13 @@ include 'header.php' ?>
 
                 </div>
             </div>
-        </div>
+        </div> -->
+        <script>
+            let cartCount = 0;
+            function addToCart() {
+                cartCount++;
+                document.getElementById('cartCount').innerText = cartCount;
+            }
+
+        </script>
         <?php include 'footer.php' ?>
