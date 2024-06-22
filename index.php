@@ -13,7 +13,6 @@ include 'header.php';
             $navbar_text = "Logout";
             $navbar_link = "authentication/logout.php";
             echo '<a class="hover:text-slate-200" href="./utils/cart.php">Cart</a>';
-            echo '<div><span id="cartCount">0</span></div>';
             echo '<a class="hover:text-slate-200" href="request_book.php">Request Book</a>';
             echo '<a href="' . $navbar_link . '">' . $navbar_text . '</a>';
         } else {
@@ -43,13 +42,18 @@ include 'header.php';
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo '<div class="p-3 book border flex flex-col relative items-center">';
-                echo '<img src="data:image/jpeg;base64,' . base64_encode($row["book_cover"]) . '" alt="Book Cover">';
-                echo '<p class="font-bold text-lg mt-3">' . $row["book_name"] . '</p>';
-                echo '<button class="bg-green-300 px-3 py-1 rounded" onclick="addToCart(' . $row['isbn_no'] . ', \'' . addslashes($row['book_name']) . '\', ' . $row['price'] . ')">Add to cart</button>';
-                echo '<p class="absolute top-2 right-2 bg-slate-900 text-white rounded px-1">Price: Rs.' . $row["price"] . '</p>';
-                echo '</div>';
+            while ($row = $result->fetch_assoc()) { ?>
+                <div class="p-3 book border flex flex-col relative items-center">
+                    <?php echo '<img src="data:image/jpeg;base64,' . base64_encode($row["book_cover"]) . '" alt="Book Cover">'; ?>
+                    <p class="font-bold text-lg mt-3"><?php echo $row["book_name"] ?></p>
+                    <form method="post" action="utils/add_to_cart.php">
+                        <input type="hidden" name="isbn_no" value="<?php echo $row['isbn_no']; ?>">
+                        <input type="number" name="quantity" value="1" min="1">
+                        <input type="submit" class="bg-green-300 px-3 py-1 rounded" value="Add to Cart">
+                    </form>
+                    <p class="absolute top-2 right-2 bg-slate-900 text-white rounded px-1">Price: Rs.<?php echo $row["price"] ?>
+                    </p>
+                </div><?php
             }
         } else {
             echo "<tr><td colspan='6'>No books found</td></tr>";
@@ -59,20 +63,5 @@ include 'header.php';
     </div>
 </div>
 
-<script>
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    function addToCart(isbn, name, price) {
-        cart.push({ isbn, name, price });
-        localStorage.setItem('cart', JSON.stringify(cart));
-        document.getElementById('cartCount').innerText = cart.length;
-    }
-
-    function loadCartCount() {
-        document.getElementById('cartCount').innerText = cart.length;
-    }
-
-    window.onload = loadCartCount;
-</script>
 
 <?php include 'footer.php'; ?>

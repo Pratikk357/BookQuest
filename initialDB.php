@@ -79,6 +79,19 @@ function createAllTable()
         echo "Error creating requested_book table: " . $conn->error . "<br>";
     }
 
+    // Creatino of cart table
+    $sql = "CREATE TABLE cart (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        isbn_no INT(10),
+        quantity INT NOT NULL,
+        FOREIGN KEY (isbn_no) REFERENCES book(isbn_no)
+        );";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Cart Table has been created<br>";
+    } else {
+        echo "Error creating cart table: " . $conn->error . "<br>";
+    }
 
 
     $conn->close();

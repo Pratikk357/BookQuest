@@ -1,59 +1,37 @@
 <?php
-session_start();
-include 'header.php';
-
-$cart = isset($_POST['cart']) ? json_decode($_POST['cart'], true) : [];
-$total = 0;
+require_once '../conn.php';
+$conn = createConn();
+$result = $conn->query("SELECT cart.id, book.book_name, book.author, book.price, cart.quantity FROM cart JOIN book ON cart.isbn_no = book.isbn_no");
 ?>
-<script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html>
+<html>
 
-<div class="container mt-5">
-    <h1 class="text-3xl font-bold mb-4">Your Cart</h1>
-    <?php if (count($cart) > 0) { ?>
-        <table class="min-w-full bg-white border">
-            <thead>
-                <tr>
-                    <th class="py-2 border">Book Name</th>
-                    <th class="py-2 border">Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($cart as $item) {
-                    $total += $item['price'];
-                    ?>
-                    <tr>
-                        <td class="py-2 border"><?php echo htmlspecialchars($item['name']); ?></td>
-                        <td class="py-2 border">Rs. <?php echo number_format($item['price'], 2); ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-        <p class="mt-4 font-bold">Total: Rs. <?php echo number_format($total, 2); ?></p>
-    <?php } else { ?>
-        <p>Your cart is empty.</p>
-    <?php } ?>
-</div>
+<head>
+    <title>Cart</title>
+</head>
 
-<script>
-    // Function to send cart data to the server
-    function sendCartData() {
-        const cart = localStorage.getItem('cart');
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = 'cart.php';
+<body>
+    <h1>Your Cart</h1>
+    <div>
+        <?php while ($row = $result->fetch_assoc()) { ?>
+            <div>
+                <h2><?php echo $row['book_name']; ?></h2>
+                <p><?php echo $row['author']; ?></p>
+                <p>$<?php echo $row['price']; ?></p>
+                <p>Quantity: <?php echo $row['quantity']; ?></p>
+                <p>Total: $<?php echo $row['price'] * $row['quantity']; ?></p>
+                <form method="post" action="remove_from_cart.php">
+                    <input type="hidden" name="cart_id" value="<?php echo $row['id']; ?>">
+                    <input type="submit" value="Remove">
+                </form>
+            </div>
+        <?php } ?>
+    </div>
+    <a href="../index.php">Continue Shopping</a>
+    <form method="post" action="buy.php">
+        <input type="submit" value="buy">
+    </form>
 
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'cart';
-        input.value = cart;
+</body>
 
-        form.appendChild(input);
-        document.body.appendChild(form);
-        form.submit();
-    }
-
-    // Send cart data when the page loads
-    // window.onload = sendCartData;`
-</script>
-
-<?php include 'footer.php'; ?>
+</html>
